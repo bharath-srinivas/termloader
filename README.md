@@ -6,6 +6,8 @@
 Termloader is a simple library to add a loading screen to your terminal applications. Termloader will render the 
 loader at the center of your terminal screen. Currently termloader is supported only on *nix operating systems.
 
+![termloader](assets/termloader.gif)
+
 ## Installation
 ```bash
 go get github.com/bharath-srinivas/term-loader
@@ -55,8 +57,8 @@ loader := termloader.New(charSet, 100 * time.Millisecond)
 ## Todo
 - [x] Loader
 - [x] Optional loading text support
+- [x] Add a gif
 - [ ] Optional image/icon support
-- [ ] Add a gif
 
 ## License
 MIT
