@@ -36,14 +36,16 @@ var validColors = map[int]bool{
 
 // Loader config.
 type Loader struct {
-	Color   int           // Color of the loader
-	Delay   time.Duration // Animation speed of the loader
-	Text    string        // Text to be displayed above the loader
-	Writer  io.Writer     // Stdout
-	active  bool          // current state of the loader
-	charset []string      // character set for the loader
-	mutex   sync.Mutex    // mutex
-	stop    chan bool     // channel for stopping the loader
+	Image    *Image        // Loading image
+	Color    int           // Color of the loader
+	Delay    time.Duration // Animation speed of the loader
+	Text     string        // Text to be displayed above the loader
+	Writer   io.Writer     // Stdout
+	active   bool          // current state of the loader
+	charset  []string      // character set for the loader
+	mutex    sync.Mutex    // mutex
+	stop     chan bool     // channel for stopping the loader
+	hasImage bool          // loading image provided
 }
 
 // this ugly hack needs to be removed. Need to find a better way to clear the stdout.
@@ -52,7 +54,7 @@ func init() {
 	clear["linux"] = func() {
 		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
-		cmd.Run()
+		_ = cmd.Run()
 	}
 	clear["darwin"] = clear["linux"]
 }
@@ -60,6 +62,10 @@ func init() {
 // New returns a pointer to the Loader interface with provided options. Default loader color will be white.
 func New(charset []string, delay time.Duration) *Loader {
 	return &Loader{
+		Image: &Image{
+			Filters: &Filters{},
+			Writer:  os.Stdout,
+		},
 		Delay:   delay,
 		Color:   None,
 		Writer:  os.Stdout,
@@ -137,14 +143,21 @@ func (l *Loader) Start() {
 	}
 
 	rendered := false
+	renderedImage := false
 	go func() {
 		lineCount := 1
 		width, height, _ := terminal.GetSize(fd)
 		if l.Text != "" {
-			lineCount++
+			lineCount += 1
 		}
 
-		fmt.Fprint(l.Writer, vCenter(lineCount, height))
+		if l.Image.Path != "" {
+			l.hasImage = true
+		}
+
+		if !l.hasImage {
+			_, _ = fmt.Fprint(l.Writer, vCenter(lineCount, height))
+		}
 		for {
 			for i := 0; i < len(l.charset); i++ {
 				select {
@@ -152,15 +165,19 @@ func (l *Loader) Start() {
 					return
 				default:
 					l.mutex.Lock()
+					if l.hasImage && !renderedImage {
+						_, _ = fmt.Fprintf(l.Writer, "%s[?25l", escape) // disable cursor
+						l.Image.Render(width, height, lineCount)
+						renderedImage = true
+					}
 					if l.Text != "" && !rendered {
 						textCenter := hCenter(l.Text, width)
-						fmt.Fprintf(l.Writer, "%s[?25l", escape) // disable cursor
-						fmt.Fprintln(l.Writer, textCenter+l.Text)
+						_, _ = fmt.Fprintf(l.Writer, "%s[?25l", escape) // disable cursor
+						_, _ = fmt.Fprintln(l.Writer, textCenter+l.Text)
 						rendered = true
 					}
-
 					loaderCenter := hCenter(l.charset[i], width)
-					fmt.Fprintf(l.Writer, "%s\r", loaderCenter+ColorString(l.charset[i], l.Color))
+					_, _ = fmt.Fprintf(l.Writer, "%s\r", loaderCenter+ColorString(l.charset[i], l.Color))
 					l.mutex.Unlock()
 					time.Sleep(l.Delay)
 				}

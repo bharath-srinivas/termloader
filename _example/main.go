@@ -23,4 +23,16 @@ func main() {
 	loader.Start()              // start the loader
 	time.Sleep(5 * time.Second) // sleep for sometime to simulate a task
 	loader.Stop()               // stop the loader
+
+	time.Sleep(2 * time.Second) // sleep again before performing next set of operations
+
+	loader.Text = ""                              // remove the loading text
+	loader.Image.SetPath("../assets/loading.png") // provide the path of the loading image
+	loader.Image.SetWidth(55)                     // set custom width for the image
+	loader.Image.SetHeight(15)                    // set custom height for the image
+	loader.Image.Sharpen(6.5)                     // sharpens the image
+
+	loader.Start()              // start the loader
+	time.Sleep(5 * time.Second) // sleep for sometime to simulate a task
+	loader.Stop()               // stop the loader
 }
