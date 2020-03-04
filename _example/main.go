@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	loader := termloader.New(termloader.Charsets[0], 100*time.Millisecond) // construct a new loader with config
-	loader.Color = termloader.Green                                        // provide a color for the loader
-	loader.Text = "Loading"                                                // provide a text to show above loader
+	loader := termloader.New(termloader.Charsets["default"], 100*time.Millisecond) // construct a new loader with config
+	loader.Color = termloader.Green                                                // provide a color for the loader
+	loader.Text = "Loading"                                                        // provide a text to show above loader
 
 	loader.Start()              // start the loader
 	time.Sleep(5 * time.Second) // sleep for sometime to simulate a task

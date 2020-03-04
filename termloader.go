@@ -42,7 +42,7 @@ type Loader struct {
 	Text     string        // Text to be displayed above the loader
 	Writer   io.Writer     // Stdout
 	active   bool          // current state of the loader
-	charset  []string      // character set for the loader
+	charset  Charset       // character set for the loader
 	mutex    sync.Mutex    // mutex
 	stop     chan bool     // channel for stopping the loader
 	hasImage bool          // loading image provided
@@ -60,7 +60,7 @@ func init() {
 }
 
 // New returns a pointer to the Loader interface with provided options. Default loader color will be white.
-func New(charset []string, delay time.Duration) *Loader {
+func New(charset Charset, delay time.Duration) *Loader {
 	return &Loader{
 		Image: &Image{
 			Filters: &Filters{},
