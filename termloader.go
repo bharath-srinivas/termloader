@@ -60,7 +60,9 @@ func init() {
 }
 
 // New returns a pointer to the Loader interface with provided options. Default loader color will be white.
-func New(charset Charset, delay time.Duration) *Loader {
+func New(charsetConfig CharsetConfig) *Loader {
+	charset := charsetConfig.Charset
+	delay := charsetConfig.Delay
 	return &Loader{
 		Image: &Image{
 			Filters: &Filters{},
