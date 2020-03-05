@@ -8,6 +8,7 @@ loader at the center of your terminal screen. Currently termloader is supported 
 
 <p align="center">
   <img src="assets/termloader.gif"/>
+  <img src="assets/termloader1.gif"/>
 </p>
 
 ## Installation
@@ -50,7 +51,13 @@ loadingText := termloader.ColorString("Now Loading", termloader.Green) // color 
 loader.Text = loadingText // provide the colored string as loading text
 ```
 
+## Custom delay
+```go
+loader.Delay = 100 * time.Millisecond // delay in milliseconds
+```
+
 ## Loading image
+Termloader supports only `jpeg` and `png` formats as of now. Support for more formats might be added later.
 ```go
 loader.Image.SetPath("/path/to/image") // provide the path of the loading image
 loader.Image.SetWidth(55) // set custom width for the image
