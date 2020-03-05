@@ -83,7 +83,7 @@ func clrScr() {
 	if value, ok := clear[runtime.GOOS]; ok {
 		value()
 	} else {
-		panic("Your platform is unsupported! I can't clear terminal screen :(")
+		panic("your platform is unsupported! couldn't clear terminal screen :(")
 	}
 }
 
