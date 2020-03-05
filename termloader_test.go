@@ -8,7 +8,7 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	loader := New(Charsets[0], 100*time.Millisecond)
+	loader := New(CharsetConfigs["default"])
 	want := "*termloader.Loader"
 	got := reflect.TypeOf(loader).String()
 	if got != want {
@@ -17,7 +17,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestLoader_Start(t *testing.T) {
-	loader := New(Charsets[0], 100*time.Millisecond)
+	loader := New(CharsetConfigs["default"])
 	loader.Color = Green
 	loader.Text = "Testing"
 	loader.Start()
@@ -29,7 +29,7 @@ func TestLoader_Start(t *testing.T) {
 }
 
 func TestLoader_Stop(t *testing.T) {
-	loader := New(Charsets[0], 100*time.Millisecond)
+	loader := New(CharsetConfigs["default"])
 	loader.Color = Green
 	loader.Text = "Testing"
 	loader.Start()
