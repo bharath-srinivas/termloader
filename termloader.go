@@ -42,7 +42,7 @@ type Loader struct {
 	Text     string        // Text to be displayed above the loader
 	Writer   io.Writer     // Stdout
 	active   bool          // current state of the loader
-	charset  Charset       // character set for the loader
+	charset  []string      // character set for the loader
 	mutex    sync.Mutex    // mutex
 	stop     chan bool     // channel for stopping the loader
 	hasImage bool          // loading image provided

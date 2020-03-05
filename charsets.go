@@ -2,13 +2,10 @@ package termloader
 
 import "time"
 
-// Character set type
-type Charset []string
-
 // Charset config type
 type CharsetConfig struct {
-	Charset
-	Delay time.Duration
+	Charset []string
+	Delay   time.Duration
 }
 
 // Predefined charset configurations for the loader.
