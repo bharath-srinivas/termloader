@@ -13,7 +13,7 @@ loader at the center of your terminal screen. Currently termloader is supported 
 
 ## Installation
 ```bash
-go get github.com/bharath-srinivas/term-loader
+go get github.com/bharath-srinivas/termloader
 ``` 
 
 ## Example Usage
