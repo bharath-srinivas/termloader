@@ -8,6 +8,5 @@ updates:
       - "bharath-srinivas"
     reviewers:
       - "bharath-srinivas"
-    versioning-strategy: increase
     pull-request-branch-name:
       separator: "-"
