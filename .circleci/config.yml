@@ -1,0 +1,78 @@
+version: 2.1
+
+jobs:
+  lint-1_18: &lint-template
+    docker:
+      - image: cimg/go:1.18
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v4-{{ checksum "go.sum" }}
+      - run:
+          name: Get GO Files
+          command: GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)
+      - run:
+          name: Install Dependencies
+          command: go mod download
+      - save_cache:
+          key: go-mod-v4-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+      - run:
+          name: Lint
+          command: test -z $(gofmt -s -l $GO_FILES)
+      - run:
+          name: Vet
+          command: go vet ./...
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "*"
+
+  test-1_18: &test-template
+    docker:
+      - image: cimg/go:1.18
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command:
+            go test -v -race ./...
+
+  lint-1_19:
+    <<: *lint-template
+    docker:
+      - image: cimg/go:1.19
+
+  test-1_19:
+    <<: *test-template
+    docker:
+      - image: cimg/go:1.19
+
+  lint-1_20:
+    <<: *lint-template
+    docker:
+      - image: cimg/go:1.20
+
+  test-1_20:
+    <<: *test-template
+    docker:
+      - image: cimg/go:1.20
+
+workflows:
+  go_test:
+    jobs:
+      - lint-1_18
+      - test-1_18:
+          requires:
+              - lint-1_18
+      - lint-1_19
+      - test-1_19:
+          requires:
+            - lint-1_19
+      - lint-1_20
+      - test-1_20:
+          requires:
+            - lint-1_20
