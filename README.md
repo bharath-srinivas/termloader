@@ -1,5 +1,5 @@
 # Termloader
-[![Build Status](https://travis-ci.org/bharath-srinivas/termloader.svg?branch=master)](https://travis-ci.org/bharath-srinivas/termloader)
+[![Build Status](https://circleci.com/gh/bharath-srinivas/termloader/tree/master.svg?style=shield)](https://circleci.com/gh/bharath-srinivas/termloader/?branch=master)
 [![GoDoc](https://godoc.org/github.com/bharath-srinivas/termloader?status.svg)](https://godoc.org/github.com/bharath-srinivas/termloader)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
